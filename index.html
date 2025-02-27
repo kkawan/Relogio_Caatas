@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reloginho</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #fff;
+            font-family: "Poppins", sans-serif;
+            background-color: black;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .relogio {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 5px solid white;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .ponteiro {
+            position: absolute;
+            width: 50%;
+            height: 2px;
+            background: white;
+            transform-origin: 0%;
+            transition: transform 0.1s linear;
+            transform: rotate(-90deg)
+        }
+
+        .hora {
+            height: 4px;
+            width: 35%;
+            background: pink;
+            z-index: 1;
+        }
+
+        .minuto {
+            height: 3px;
+            width: 45%;
+            background: cyan;
+            z-index: 2;
+        }
+
+        .segundo {
+            height: 2px;
+            width: 50%;
+            background: yellow;
+            z-index: 3;
+        }
+
+        .centro {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+    </style>
+</head>
+
+<body>
+    <h1>Relógio NPI</h1>
+
+    <div class="relogio" id="relogio">
+        <div class="ponteiros">
+            <div class="ponteiro hora"></div>
+            <div class="ponteiro minuto"></div>
+            <div class="ponteiro segundo"></div>
+        </div>
+        <div class="centro"></div>
+    </div>
+
+    <script>
+        function atualizarRelogio() {
+            // Definir o fuso horário de Brasília
+            const brasiliaTimeZone = 'America/Sao_Paulo';
+            
+            // Obter a hora atual em Brasília
+            const data = new Date().toLocaleString('en-US', { timeZone: brasiliaTimeZone });
+            const hora = new Date(data).getHours() % 12; // 12 horas
+            const minuto = new Date(data).getMinutes();
+            const segundo = new Date(data).getSeconds() - 8;
+            
+            // Calcular os ângulos para os ponteiros
+            const anguloHora = (hora * 30) + (minuto / 2); // 30 graus por hora + ajuste do minuto
+            const anguloMinuto = minuto * 6; // 6 graus por minuto
+            const anguloSegundo = segundo * 6; // 6 graus por segundo
+            
+            // Atualizar os ponteiros com base nos ângulos
+            document.querySelector('.hora').style.transform = `rotate(${anguloHora + -90}deg)`;
+            document.querySelector('.minuto').style.transform = `rotate(${anguloMinuto + -90}deg)`;
+            document.querySelector('.segundo').style.transform = `rotate(${anguloSegundo + -90}deg)`;
+        }
+        
+        // Atualizar o relógio a cada segundo
+        setInterval(atualizarRelogio, 1000);
+        
+        // Inicializar o relógio na primeira vez
+        atualizarRelogio();
+        
+        // Função para mostrar a imagem do gato como background
+        function mostrarGato() {
+            const imagensGatos = [
+                "https://cataas.com/cat"
+            ];
+
+            // Escolher uma imagem aleatória
+            const imagemAleatoria = imagensGatos[Math.floor(Math.random() * imagensGatos.length)] + "?t=" + new Date().getTime();
+
+            // Aplicar a imagem de fundo no relógio
+            const relogio = document.getElementById("relogio");
+            relogio.style.backgroundImage = `url(${imagemAleatoria})`;
+        }
+
+        // Mostrar a imagem do gato como fundo a cada 2 minutos
+        setInterval(mostrarGato, 1200000);
+        mostrarGato(); // Inicializa com uma imagem de gato
+    </script>
+
+</body>
+
+</html>
